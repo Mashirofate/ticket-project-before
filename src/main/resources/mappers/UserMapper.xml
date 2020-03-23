@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tickets.mapper.UserMapper">
+    <insert id="insert">
+        INSERT INTO user(u_id, u_user, u_password, u_startusing)
+        VALUES (#{uId},#{uUser},#{uPassword},#{uStartusing})
+    </insert>
+    <delete id="deleteReal">
+        DELETE FROM user WHERE u_id = #{uId} LIMIT 1
+    </delete>
+    <update id="delete">
+        UPDATE user SET u_startusing = 0 WHERE u_id = #{uId} LIMIT 1
+    </update>
+</mapper>
