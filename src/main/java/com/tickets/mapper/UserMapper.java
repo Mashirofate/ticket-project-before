@@ -30,4 +30,11 @@ public interface UserMapper {
      */
     int delete(String uId);
 
+    /**
+     * 获取 u_user的数量
+     * @param uUser
+     * @return
+     */
+    int selectCout(String uUser);
+
 }

@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
         user.setUPassword(PwdUtil.digest(user.getUPassword()));
         return userMapper.insert(user) == 1;
     }
-    
+
     @Override
     public boolean saveAll(List<User> users) {
         return false;

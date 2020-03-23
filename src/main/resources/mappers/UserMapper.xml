@@ -10,6 +10,9 @@
     <delete id="deleteReal">
         DELETE FROM user WHERE u_id = #{uId} LIMIT 1
     </delete>
+    <select id="selectCout" resultType="java.lang.Integer">
+        SELECT COUNT(u_id) FROM user WHERE u_user = #{uUser}
+    </select>
     <update id="delete">
         UPDATE user SET u_startusing = 0 WHERE u_id = #{uId} LIMIT 1
     </update>
