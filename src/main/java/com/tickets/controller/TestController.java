@@ -15,7 +15,6 @@ public class TestController {
 
     @RequestMapping("/push/{toUserId}/{message}")
     public String pushToWeb(@PathVariable String message, @PathVariable String toUserId) throws IOException {
-
         List<Map<Object,Integer>> map = new ArrayList<>();
         Map<Object, Integer> map1;
         for (int i = 0; i < 100; i++){
@@ -23,7 +22,6 @@ public class TestController {
             map1.put(new Date(),i);
             map.add(map1);
         }
-
         WebSocketServer.sendInfo(message, map.toString());
 
         WebSocketServer.sendInfo(map.toString(), toUserId);

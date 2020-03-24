@@ -23,9 +23,9 @@ public class WebConfiguration implements WebMvcConfigurer {
                 .maxAge(3600)
                 .allowedHeaders("*");
     }
-    @Bean
-    public ServerEndpointExporter serverEndpointExporter() {
-        return new ServerEndpointExporter();
-    }
+//    @Bean
+//    public ServerEndpointExporter serverEndpointExporter() {
+//        return new ServerEndpointExporter();
+//    }
 
 }
