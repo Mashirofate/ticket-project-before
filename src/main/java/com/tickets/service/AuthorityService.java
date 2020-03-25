@@ -11,4 +11,6 @@ public interface AuthorityService {
      * @return
      */
     boolean save(Authority authority);
+
+
 }

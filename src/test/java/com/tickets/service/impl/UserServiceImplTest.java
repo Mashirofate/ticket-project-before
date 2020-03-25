@@ -1,5 +1,6 @@
 package com.tickets.service.impl;
 
+import com.tickets.dto.UserSeachDto;
 import com.tickets.entity.User;
 import com.tickets.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -23,5 +24,10 @@ class UserServiceImplTest {
         user.setUStartusing(1);
         user.setUAuthorityId("1");
         System.out.println(userService.save(user));
+    }
+
+    @Test
+    void getByKeys() {
+        System.out.println(userService.getByKeys(new UserSeachDto()));
     }
 }

@@ -4,4 +4,46 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tickets.mapper.VenueManagementMapper">
 
+    <insert id="insert">
+        <selectKey keyProperty="vmId" resultType="string" order="BEFORE">
+            SELECT uuId()
+        </selectKey>
+        INSERT INTO venue_management (vm_id, vm_name, vm_enable, vm_note, vm_creationtime, vm_u_id)
+        VALUES (#{vmId}, #{vmName}, #{vmEnable}, #{vmNote}, #{vmCreationtime}, #{vmUId})
+    </insert>
+
+    <update id="updateEnable">
+        UPDATE venue_management SET vm_enable = #{enable} WHERE vm_id = #{vmId} LIMIT 1
+    </update>
+
+    <select id="selectByKeys" resultType="java.util.Map">
+        SELECT vm.vm_id AS vmId, vm.vm_name AS vmName, IF(vm.vm_enable = 0, '不启用','启用') AS vmEnable, vm.vm_note AS vmNote, vm.vm_creationtime AS vmCreationtime,
+            u.u_user AS uUser
+        FROM venue_management AS vm
+        LEFT JOIN user AS u ON u.u_id = vm.vm_u_id
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="vmName != null and vmName.length != 0">
+                vm.vm_name LIKE "%"#{vmName}"%"
+            </if>
+            <if test="vmEnable != null">
+                AND vm.vm_enable = #{vmEnable}
+            </if>
+        </trim>
+        LIMIT ${(current-1)*size},${size}
+    </select>
+
+    <select id="selectCountByKeys" resultType="java.lang.Integer">
+        SELECT COUNT(vm.vm_id)
+        FROM venue_management AS vm
+        LEFT JOIN user AS u ON u.u_id = vm.vm_u_id
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="vmName != null and vmName.length != 0">
+                vm.vm_name LIKE "%"#{vmName}"%"
+            </if>
+            <if test="vmEnable != null">
+                AND vm.vm_enable = #{vmEnable}
+            </if>
+        </trim>
+    </select>
+
 </mapper>

@@ -13,6 +13,33 @@
     <select id="selectCout" resultType="java.lang.Integer">
         SELECT COUNT(u_id) FROM user WHERE u_user = #{uUser}
     </select>
+    <select id="selectByKeys" resultType="java.util.Map">
+        SELECT u.u_id AS uId, u.u_user AS uUser, IF(u.u_startusing=0,'删除', IF(u.u_startusing=1,'启用','不启用')) AS uStartusing,
+                a.authority_name AS authorityName
+        FROM user AS u
+        LEFT JOIN authority AS a ON a.authority_id = u.u_authority_id
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="uUser != null and uUser.length != 0">
+                u.u_user LIKE "%"#{uUser}"%"
+            </if>
+            <if test="uStartusing != null">
+                AND u.u_startusing = #{uStartusing}
+            </if>
+        </trim>
+        LIMIT ${(current-1)*size},${size}
+    </select>
+    <select id="selectCountByKeys" resultType="java.lang.Integer">
+        SELECT COUNT(u.u_id)
+        FROM user AS u
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="uUser != null and uUser.length != 0">
+                u.u_user LIKE "%"#{uUser}"%"
+            </if>
+            <if test="uStartusing != null">
+                AND u.u_startusing = #{uStartusing}
+            </if>
+        </trim>
+    </select>
     <update id="delete">
         UPDATE user SET u_startusing = 0 WHERE u_id = #{uId} LIMIT 1
     </update>

@@ -9,7 +9,7 @@ public class VenueManagement {
 
     private String vmId;
     private String vmName;
-    private String vmEnable;
+    private Character vmEnable;
     private String vmNote;
     private Date vmCreationtime;
     private String vmUId;

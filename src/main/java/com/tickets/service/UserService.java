@@ -1,5 +1,7 @@
 package com.tickets.service;
 
+import com.tickets.dto.Page;
+import com.tickets.dto.UserSeachDto;
 import com.tickets.entity.User;
 
 import java.util.List;
@@ -32,6 +34,15 @@ public interface UserService {
      */
     boolean remove(String uId);
 
+
+    /**
+     * 批量逻辑删除
+     *
+     * @param uIds
+     * @return
+     */
+    boolean removeBatch(String[] uIds);
+
     /**
      * 真实删除
      *
@@ -39,4 +50,15 @@ public interface UserService {
      * @return
      */
     boolean removeReal(String uId);
+
+    /**
+     * 条件分页
+     *
+     * @param userSeachDto
+     * @return
+     */
+    Page getByKeys(UserSeachDto userSeachDto);
+
+
+
 }
