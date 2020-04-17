@@ -12,6 +12,5 @@ public class VenueManagement {
     private Character vmEnable;
     private String vmNote;
     private Date vmCreationtime;
-    private String vmUId;
 
 }

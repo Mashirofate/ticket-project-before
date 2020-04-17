@@ -2,11 +2,13 @@ package com.tickets.dto;
 
 import io.swagger.models.auth.In;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * 结果集
  */
 @Data
+@Accessors(chain = true)
 public class ResponseResult {
     private Integer code;
     private String msg;
@@ -29,6 +31,8 @@ public class ResponseResult {
         this.msg = msg;
         this.data = data;
     }
+
+
 
     public static ResponseResult SUCCESS() {
         return new ResponseResult(HttpCode.SUCCESS.getCode(), HttpCode.SUCCESS.getMsg());

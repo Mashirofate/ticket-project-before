@@ -8,6 +8,6 @@ public class User {
     private String uUser;
     private String uPassword;
     private Integer uStartusing;
-    private String uAuthorityId;
+    private String uAuthority;
 }
 

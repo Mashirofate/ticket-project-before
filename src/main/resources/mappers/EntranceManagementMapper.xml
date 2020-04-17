@@ -3,5 +3,67 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tickets.mapper.EntranceManagementMapper">
+    <insert id="insert">
+        <selectKey keyProperty="emId" resultType="string" order="BEFORE">
+            SELECT uuId()
+        </selectKey>
+        INSERT INTO entrance (eId, eName, eEnable, eNote, evId, eCreationtime)
+        VALUES (#{emId}, #{emName}, #{emEnable}, #{emNote}, #{emVmId}, now())
+    </insert>
+    <update id="updateEnable">
+        UPDATE entrance SET eEnable = #{emEnable} WHERE eId = #{emId} LIMIT 1
+    </update>
+
+    <select id="selectEntrancePeopleCount" resultType="java.util.Map">
+        SELECT
+				d.eName AS '入口', COUNT(DISTINCT(e.etId)) AS '数量'
+        FROM (
+            SELECT
+                e.eName,e.eId,d.dId
+            FROM
+                device AS d
+            INNER JOIN entrance AS e ON e.eId = d.deId
+            WHERE
+                d.daId = #{vaId}
+        ) AS d
+        INNER JOIN enters AS e ON e.edId = d.dId
+        GROUP BY d.eName
+    </select>
+    <select id="selectByKeys" resultType="java.util.Map">
+        SELECT
+            e.eId, e.eName, IF(e.eEnable = 0, '删除',IF(e.eEnable = 1, '启用','不启用')) eEnable, e.eNote , v.vName
+        FROM
+            entrance AS e
+        LEFT JOIN venues AS v ON  v.vId = e.evId
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="emName != null and emName.length != 0">
+                e.eName LIKE "%"#{emName}"%"
+            </if>
+            <if test="emEnable != null">
+                AND e.eEnable = #{emEnable}
+            </if>
+            <if test="vmName != null and vmName.length != 0">
+                AND v.vName LIKE "%"#{vmName}"%"
+            </if>
+        </trim>
+         LIMIT ${(current-1)*size},${size}
+    </select>
+    <select id="selectCountByKeys" resultType="java.lang.Integer">
+        SELECT COUNT(e.eId)
+        FROM entrance AS e
+        LEFT JOIN venues AS v ON  v.vId = e.evId
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="emName != null and emName.length != 0">
+                e.eName LIKE "%"#{emName}"%"
+            </if>
+            <if test="emEnable != null">
+                AND e.eEnable = #{emEnable}
+            </if>
+            <if test="vmName != null and vmName.length != 0">
+                AND v.vName LIKE "%"#{vmName}"%"
+            </if>
+        </trim>
+    </select>
+
 
 </mapper>

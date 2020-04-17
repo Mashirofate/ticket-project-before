@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tickets.mapper.TicketingStaffMapper">
+
+    <insert id="insert">
+        <selectKey keyProperty="tsId" resultType="string" order="BEFORE">
+            SELECT uuId()
+        </selectKey>
+        INSERT INTO ticketing
+        (tId, taId, tvId, teId, tIdentitycard, tIccard, tQrcard, tSeatingarea,
+        tRownumber, tSeat, tGrandstand, tRealname, tNote, tWId,phone)
+        VALUES (#{tsId}, #{tsVaId}, #{tsVmId}, #{tsEmId}, #{tsIdentiycard}, #{tsIccard}, #{tsQrcard},
+        #{tsSeatingArea}, #{tsRownumber}, #{tsSeat}, #{tsGrandstand}, #{tsRealName}, #{tsNote}, #{tWId}, #{phone})
+    </insert>
+
+    <select id="selectByKeys" resultType="java.util.Map">
+        SELECT t.tId, a.aName, v.vName, e.eName, t.tIdentitycard, t.tIccard, t.tQrcard, t.tSeatingarea,t.tRownumber, t.tSeat, t.tGrandstand, t.tRealname, t.tNote
+        <include refid="searchSQL"></include>
+        LIMIT ${(current-1)*size},${size}
+    </select>
+
+    <select id="selectCountByKeys" resultType="java.lang.Integer">
+        SELECT COUNT(t.tId)
+        <include refid="searchSQL"></include>
+    </select>
+    <select id="selectDataByVaId" resultType="java.lang.Integer">
+
+    </select>
+    <select id="selectById" resultType="java.util.Map">
+        SELECT t.tId, t.tIdentitycard, t.tRealname, t.phone, t.tQrcard, a.aName, a.aNote
+        FROM ticketing t
+        LEFT JOIN activity a On a.aId = t.taId
+        WHERE tWId= #{id}
+    </select>
+
+    <sql id="searchSQL">
+        FROM ticketing AS t
+        LEFT JOIN activity AS a ON t.taId = a.aId
+        LEFT JOIN venues AS v ON t.tvId = v.vId
+        LEFT JOIN entrance AS e ON t.tvId = e.eId
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="tsVaName != null and tsVaName.length != 0">
+                AND a.aName LIKE "%"#{tsVaName}"%"
+            </if>
+            <if test="tsVmName != null and tsVmName.length != 0">
+                AND v.vName LIKE "%"#{tsVmName}"%"
+            </if>
+            <if test="tsEmName != null and tsEmName.length != 0">
+                AND e.eName LIKE "%"#{tsEmName}"%"
+            </if>
+            <if test="tsIdentiycard != null and tsIdentiycard.length != 0">
+                AND t.tIdentitycard LIKE "%"#{tsIdentiycard}"%"
+            </if>
+            <if test="tsQrcard != null and tsQrcard.length != 0">
+                AND t.tQrcard LIKE "%"#{tsQrcard}"%"
+            </if>
+            <if test="tsSeatingArea != null and tsSeatingArea.length != 0">
+                AND t.tSeatingarea LIKE "%"#{tsSeatingArea}"%"
+            </if>
+            <if test="tsRownumber != null and tsRownumber.length != 0">
+                AND t.tRownumber LIKE "%"#{tsRownumber}"%"
+            </if>
+            <if test="tsSeat != null and tsSeat.length != 0">
+                AND t.tSeat LIKE "%"#{tsSeat}"%"
+            </if>
+            <if test="tsRealName != null and tsRealName.length != 0">
+                AND t.tRealname LIKE "%"#{tsRealName}"%"
+            </if>
+        </trim>
+    </sql>
+</mapper>

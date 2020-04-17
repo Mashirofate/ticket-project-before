@@ -1,13 +1,16 @@
 package com.tickets.service.impl;
 
 import com.tickets.dto.Page;
+import com.tickets.dto.VenueManagementAddDto;
 import com.tickets.dto.VenueMgDto;
+import com.tickets.entity.VenueManagement;
 import com.tickets.mapper.VenueManagementMapper;
 import com.tickets.service.VenueManagementService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -30,6 +33,23 @@ public class VenueManagementServiceImpl implements VenueManagementService {
 
     @Override
     public boolean update(String vmId, Character vmEnable) {
-        return venueManagementMapper.updateEnable(vmId,vmEnable) == 1;
+        return venueManagementMapper.updateEnable(vmId, vmEnable) == 1;
+    }
+
+    @Override
+    public boolean save(VenueManagementAddDto venueManagementAddDto) {
+        VenueManagement venueManagement = new VenueManagement();
+        BeanUtils.copyProperties(venueManagementAddDto, venueManagement);
+        return venueManagementMapper.insert(venueManagement) == 1;
+    }
+
+    @Override
+    public boolean delById(String id) {
+        return venueManagementMapper.updateEnable(id, '0') == 1;
+    }
+
+    @Override
+    public List<Map<String, Object>> getSimpleList() {
+        return venueManagementMapper.selectSimple();
     }
 }

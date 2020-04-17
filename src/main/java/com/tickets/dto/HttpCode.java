@@ -4,7 +4,13 @@ package com.tickets.dto;
  * 响应状态码
  */
 public enum HttpCode {
-    SUCCESS(2000,"ok")
+    SUCCESS(2000,"ok"),
+    ERROR(4005,"orror"),
+    TOKEN_ERROR(4015,"sigin error"),
+    /**
+     * 暂无权限
+     */
+    NOT_AUTHORIZED(4025,"not authorized")
     ;
 
     private Integer code;

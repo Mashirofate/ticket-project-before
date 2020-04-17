@@ -11,5 +11,7 @@ public class VenueActivies {
     private Integer vaEnable;
     private String vaNote;
     private Date vaCreationtime;
-    private String vaUId;
+    private Integer vaTicketnumber;
+    private Integer vaEmployeenumber;
+    private String almage;
 }

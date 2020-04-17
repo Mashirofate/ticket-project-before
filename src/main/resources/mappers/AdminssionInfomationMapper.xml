@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tickets.mapper.AdminssionInfomationMapper">
+
+
+    <select id="selectCountLimitTime" resultType="java.util.Map">
+        SELECT COUNT(DISTINCT e.etId) AS count, DATE_FORMAT(now(),'%H:%i:%S') AS date
+        FROM enters AS e
+        INNER JOIN device AS d ON d.dId = e.edId
+        WHERE (e.eDate >= #{date} - INTERVAL 60 SECOND) AND d.daId = #{vaId}
+    </select>
+    <select id="selectTypeCount" resultType="java.util.Map">
+        SELECT
+            (
+                SELECT COUNT(DISTINCT e.etId)
+                FROM device AS d
+                INNER JOIN enters AS e ON e.edId = d.dId
+                WHERE daId = #{vaId} AND dWorker = 0
+            ) AS 票务入场,
+            (
+                SELECT COUNT(DISTINCT  e.etId)
+                FROM device AS d
+                INNER JOIN enters AS e ON e.edId = d.dId
+                WHERE daId = #{vaId} AND dWorker = 1
+            ) AS 工作人员入场,
+
+            (
+                SELECT COUNT(DISTINCT e.etId)
+                FROM device AS d
+                INNER JOIN enters AS e ON e.edId = d.dId
+                INNER JOIN ticketing AS t ON t.tId = e.etId
+                WHERE daId = #{vaId} AND (ISNULL (t.tIdentitycard) OR LENGTH(t.tIdentitycard) &lt; 1)
+            ) AS 未实名入场,
+
+            (
+                SELECT COUNT(DISTINCT e.etId)
+                FROM device AS d
+                INNER JOIN enters AS e ON e.edId = d.dId
+                INNER JOIN ticketing AS t ON t.tId = e.etId
+                WHERE daId = #{vaId} AND NOT (ISNULL (t.tIdentitycard) OR LENGTH(t.tIdentitycard) &lt; 1)
+            ) AS 实名入场
+    </select>
+</mapper>

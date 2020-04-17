@@ -27,6 +27,14 @@ public interface UserMapper {
     int deleteReal(String uId);
 
     /**
+     * 更新用户的状态
+     * @param uId
+     * @param startusing
+     * @return
+     */
+    int updateStartusing(String uId, String startusing);
+
+    /**
      * 逻辑删除
      *
      * @param uId
@@ -57,5 +65,22 @@ public interface UserMapper {
      * @return
      */
     int selectCountByKeys(UserSeachDto userSeachDto);
+
+    /**
+     * 根据用户名获取条数
+     * @param uUser
+     * @return
+     */
+    int selectCountByuUser(String uUser);
+
+    /**
+     * 返回 主键Id
+     * @param uUser
+     * @param uPassword
+     * @return
+     */
+    String selectIsExist(String uUser, String uPassword);
+
+    Map<String,Object> selectById(String uId);
 
 }

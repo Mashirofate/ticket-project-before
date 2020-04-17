@@ -8,42 +8,75 @@
         <selectKey keyProperty="vmId" resultType="string" order="BEFORE">
             SELECT uuId()
         </selectKey>
-        INSERT INTO venue_management (vm_id, vm_name, vm_enable, vm_note, vm_creationtime, vm_u_id)
-        VALUES (#{vmId}, #{vmName}, #{vmEnable}, #{vmNote}, #{vmCreationtime}, #{vmUId})
+        INSERT INTO
+            venues ( vId, vName, vEnable, vNote, vCreationtime )
+        VALUES
+            (#{vmId}, #{vmName}, #{vmEnable}, #{vmNote}, now())
     </insert>
 
     <update id="updateEnable">
-        UPDATE venue_management SET vm_enable = #{enable} WHERE vm_id = #{vmId} LIMIT 1
+        UPDATE
+            venues
+        SET
+            vEnable = #{enable}
+        WHERE
+            vId = #{vmId} LIMIT 1
     </update>
 
     <select id="selectByKeys" resultType="java.util.Map">
-        SELECT vm.vm_id AS vmId, vm.vm_name AS vmName, IF(vm.vm_enable = 0, '不启用','启用') AS vmEnable, vm.vm_note AS vmNote, vm.vm_creationtime AS vmCreationtime,
-            u.u_user AS uUser
-        FROM venue_management AS vm
-        LEFT JOIN user AS u ON u.u_id = vm.vm_u_id
+        SELECT
+            v.vId, v.vName, IF(v.vEnable = 0, '删除',IF(v.vEnable = 1, '启用','不启用')) vEnable, v.vNote, v.vCreationtime,
+            (
+            SELECT
+                COUNT(e.eId)
+            FROM
+                entrance AS e
+            WHERE
+                e.evId = v.vId AND e.eEnable = 1
+            ) AS openEntranceCount,
+            (
+            SELECT
+                COUNT(e.eId)
+            FROM
+                entrance AS e
+            WHERE
+                e.evId = v.vId AND e.eEnable != 0
+            ) AS openEntranceCountTotal
+            FROM
+                venues AS v
         <trim prefix="WHERE" prefixOverrides="AND |OR ">
             <if test="vmName != null and vmName.length != 0">
-                vm.vm_name LIKE "%"#{vmName}"%"
+                v.vName LIKE "%"#{vmName}"%"
             </if>
             <if test="vmEnable != null">
-                AND vm.vm_enable = #{vmEnable}
+                AND v.vEnable = #{vmEnable}
             </if>
         </trim>
-        LIMIT ${(current-1)*size},${size}
+        LIMIT
+            ${(current-1)*size},${size}
     </select>
 
     <select id="selectCountByKeys" resultType="java.lang.Integer">
-        SELECT COUNT(vm.vm_id)
-        FROM venue_management AS vm
-        LEFT JOIN user AS u ON u.u_id = vm.vm_u_id
+        SELECT
+            COUNT(v.vId)
+        FROM
+            venues AS v
         <trim prefix="WHERE" prefixOverrides="AND |OR ">
             <if test="vmName != null and vmName.length != 0">
-                vm.vm_name LIKE "%"#{vmName}"%"
+                v.vName LIKE "%"#{vmName}"%"
             </if>
             <if test="vmEnable != null">
-                AND vm.vm_enable = #{vmEnable}
+                AND v.vEnable = #{vmEnable}
             </if>
         </trim>
+    </select>
+    <select id="selectSimple" resultType="java.util.Map">
+        SELECT
+            vId, vName
+        FROM
+            venues
+        WHERE
+            vEnable = 1
     </select>
 
 </mapper>

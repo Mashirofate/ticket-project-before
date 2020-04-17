@@ -11,7 +11,7 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class VenueManagementMapperTest {
 
     @Resource
@@ -25,7 +25,6 @@ class VenueManagementMapperTest {
         venueManagement.setVmEnable('1');
         venueManagement.setVmNote("测试");
         venueManagement.setVmCreationtime(new Date());
-        venueManagement.setVmUId("5");
         System.out.println(venueManagementMapper.insert(venueManagement));
     }
 

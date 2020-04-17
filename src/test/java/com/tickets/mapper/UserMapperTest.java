@@ -22,7 +22,7 @@ class UserMapperTest {
         user.setUUser("刘佳伟");
         user.setUPassword("123456");
         user.setUStartusing(1);
-        user.setUAuthorityId("1");
+//        user.setUAuthorityId("1");
 
         System.out.println(userMapper.insert(user));
     }

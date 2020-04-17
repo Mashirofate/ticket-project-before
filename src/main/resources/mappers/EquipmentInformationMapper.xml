@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tickets.mapper.EquipmentInformationMapper">
+
+    <select id="selectEmByVaId" resultType="java.util.Map">
+        SELECT em.em_id AS emId, em.em_name AS emName
+        FROM equipment_information AS ei
+        LEFT JOIN entrance_management AS em
+        WHERE ei.ei_va_id = #{vaId}
+    </select>
+</mapper>

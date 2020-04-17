@@ -1,7 +1,11 @@
 package com.tickets.service;
 
 import com.tickets.dto.Page;
+import com.tickets.dto.VenueManagementAddDto;
 import com.tickets.dto.VenueMgDto;
+
+import java.util.List;
+import java.util.Map;
 
 public interface VenueManagementService {
 
@@ -21,4 +25,21 @@ public interface VenueManagementService {
      * @return
      */
     boolean update(String vmId, Character vmEnable);
+
+
+    /**
+     * 保存条数据
+     * @param venueManagementAddDto
+     * @return
+     */
+    boolean save(VenueManagementAddDto venueManagementAddDto);
+
+    /**
+     * 删除场馆
+     * @param id
+     * @return
+     */
+    boolean delById(String id);
+
+   List<Map<String, Object>> getSimpleList();
 }

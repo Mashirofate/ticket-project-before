@@ -1,5 +1,6 @@
 package com.tickets.controller;
 
+import com.tickets.annotations.Authentication;
 import com.tickets.dto.ResponseResult;
 import com.tickets.entity.Authority;
 import com.tickets.service.AuthorityService;
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/author")
 public class AuthorityController {
-
     @Autowired
     private AuthorityService authorityService;
 
+    @Authentication(isLogin = true,isRequiredUserInfo = true)
     @ApiOperation(value = "创建一个权限")
     @PostMapping("/")
     public ResponseResult add(@RequestBody Authority authority) {

@@ -22,8 +22,8 @@ class UserServiceImplTest {
         user.setUUser("刘佳伟");
         user.setUPassword("123456");
         user.setUStartusing(1);
-        user.setUAuthorityId("1");
-        System.out.println(userService.save(user));
+//        user.setUAuthorityId("1");
+
     }
 
     @Test

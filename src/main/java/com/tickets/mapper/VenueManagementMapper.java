@@ -40,4 +40,11 @@ public interface VenueManagementMapper {
      * @return
      */
     int updateEnable(String vmId, Character enable);
+
+
+    /**
+     * 获取简单的字段，vmId and emName
+     * @return
+     */
+    List<Map<String,Object>> selectSimple();
 }

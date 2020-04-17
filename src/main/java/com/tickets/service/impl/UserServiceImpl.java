@@ -2,6 +2,7 @@ package com.tickets.service.impl;
 
 import com.tickets.dto.Page;
 import com.tickets.dto.UserSeachDto;
+import com.tickets.dto.UserSinInDto;
 import com.tickets.entity.User;
 import com.tickets.mapper.UserMapper;
 import com.tickets.service.UserService;
@@ -21,13 +22,24 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public boolean save(User user) {
+    public boolean save(UserSinInDto userSinInDto) {
+
+        User user = new User();
+        BeanUtils.copyProperties(userSinInDto, user);
+        user.setUPassword(PwdUtil.digest(user.getUPassword()));
         if (StringUtils.isEmpty(user.getUStartusing())) {
             user.setUStartusing(1);
         }
+
+
         user.setUPassword(PwdUtil.digest(user.getUPassword()));
         return userMapper.insert(user) == 1;
     }
+
+    public static void main(String[] args) {
+        System.out.println(PwdUtil.digest("ZAT"));
+    }
+
 
     @Override
     public boolean saveAll(List<User> users) {
@@ -62,5 +74,26 @@ public class UserServiceImpl implements UserService {
             page.setRecords(userMapper.selectByKeys(userSeachDto));
         }
         return page;
+    }
+
+    @Override
+    public boolean updateStartusing(String uId, String uStartusing) {
+        return userMapper.updateStartusing(uId, uStartusing) == 1;
+    }
+
+    @Override
+    public boolean isUUserExist(String uUser) {
+        return userMapper.selectCountByuUser(uUser) > 0;
+    }
+
+    @Override
+    public String isLogin(String uUser, String uPassword) {
+        uPassword = PwdUtil.digest(uPassword);
+        return userMapper.selectIsExist(uUser, uPassword);
+    }
+
+    @Override
+    public Map<String, Object> getById(String uId) {
+        return userMapper.selectById(uId);
     }
 }

@@ -4,4 +4,51 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tickets.mapper.VenueActiviesMapper">
 
+    <insert id="insert">
+        <selectKey keyProperty="vaId" resultType="string" order="BEFORE">
+            SELECT uuId()
+        </selectKey>
+        INSERT INTO activity (aId, aName, aEnable, aNote, aCreationtime, aTicketnumber,  aEmployeenumber, aImage)
+        VALUES (#{vaId}, #{vaName}, #{vaEnable}, #{vaNote}, now(), #{vaTicketnumber}, #{vaEmployeenumber}, #{almage})
+    </insert>
+    <update id="updateEnable">
+        UPDATE activity SET aEnable = #{vaEnable} WHERE aId = #{vaId}
+    </update>
+    <select id="selectByKeys" resultType="java.util.Map">
+        SELECT aId, aName, aNote, IF(aEnable = 0, '删除', IF(aEnable=1,'启用','不启用')) aEnable, aCreationtime, aTicketnumber , aEmployeenumber, aImage
+        FROM activity
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="vaName != null and vaName.length != 0">
+                aName LIKE "%"#{vaName}"%"
+            </if>
+            <if test="vaEnable != null">
+                AND aEnable = #{vaEnable}
+            </if>
+        </trim>
+        LIMIT ${(current-1)*size},${size}
+    </select>
+    <select id="selectCountByKeys" resultType="java.lang.Integer">
+        SELECT COUNT(aId)
+        FROM activity
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="vaName != null and vaName.length != 0">
+                aName LIKE "%"#{vaName}"%"
+            </if>
+            <if test="vaEnable != null">
+                AND aEnable = #{vaEnable}
+            </if>
+        </trim>
+    </select>
+    <select id="selectByEnable" resultType="java.util.Map">
+        SELECT *
+        FROM activity
+        WHERE aEnable = #{enable}
+    </select>
+    <select id="selectByVaId" resultType="java.util.Map">
+        SELECT *
+        FROM activity
+        WHERE aId = #{vaId}
+        LIMIT 1
+    </select>
+
 </mapper>

@@ -9,8 +9,8 @@ import java.util.UUID;
 @Data
 public class Authority {
     @ApiModelProperty(hidden = true)
-    private String authorityId;
-    private String authorityName;
-    private String authorityNote;
-    private String authorityGrade;
+    private String aId;
+    private String aName;
+    private String aNote;
+    private String aGrade;
 }

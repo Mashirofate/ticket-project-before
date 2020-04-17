@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tickets.mapper.FaceMapper">
+
+
+    <select id="selectImageByActivityId" resultType="java.lang.String">
+        SELECT
+            CONCAT('data:image/jpg;base64,', f.fImage)  AS image
+        FROM
+            device AS d
+            INNER JOIN enters AS e ON d.dId = e.edId
+            INNER JOIN face AS f ON e.etId = f.ftId
+        WHERE
+            d.daId = #{aId}
+        ORDER BY
+            e.eDate DESC
+            LIMIT 10
+    </select>
+</mapper>

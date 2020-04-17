@@ -2,9 +2,11 @@ package com.tickets.service;
 
 import com.tickets.dto.Page;
 import com.tickets.dto.UserSeachDto;
+import com.tickets.dto.UserSinInDto;
 import com.tickets.entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -13,10 +15,10 @@ public interface UserService {
      * <p>
      * 已测试
      *
-     * @param user
+     * @param UserSinInDto
      * @return
      */
-    boolean save(User user);
+    boolean save(UserSinInDto UserSinInDto);
 
     /**
      * 批量保存用户
@@ -59,6 +61,30 @@ public interface UserService {
      */
     Page getByKeys(UserSeachDto userSeachDto);
 
+    /**
+     * 更新用户的状态
+     * @param uId
+     * @param uStartusing
+     * @return
+     */
+    boolean updateStartusing(String uId, String uStartusing);
 
+    /**
+     * 判断用户名是否存在
+     * @param uUser
+     * @return
+     */
+    boolean isUUserExist(String uUser);
+
+    /**
+     * 返回主键Id
+     * @param uUser
+     * @param uPassword
+     * @return
+     */
+    String isLogin(String uUser, String uPassword);
+
+
+    Map<String, Object> getById(String uId);
 
 }

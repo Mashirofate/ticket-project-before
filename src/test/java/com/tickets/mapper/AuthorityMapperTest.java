@@ -17,9 +17,9 @@ class AuthorityMapperTest {
     @Test
     void insert() {
         Authority authority = new Authority();
-        authority.setAuthorityName("管理员");
-        authority.setAuthorityNote("主管权限");
-        authority.setAuthorityGrade("1");
+//        authority.setAuthorityName("管理员");
+//        authority.setAuthorityNote("主管权限");
+//        authority.setAuthorityGrade("1");
         System.out.println(authorityMapper.insert(authority));
         System.out.println(authority);
     }
